@@ -405,7 +405,11 @@ body{background:radial-gradient(circle at top,#1a1a1a,#090909 55%);}
 .toast{background:rgba(25,25,25,.65);backdrop-filter:blur(20px);}
 </style>
 
-</head>
+
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<style>.view input,.view textarea,.view select{background:rgba(20,20,20,.7)!important;color:#fff!important;border:1px solid rgba(255,255,255,.12)!important}.recipe-btn{width:100%;padding:12px;border-radius:14px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12);margin-top:8px}</style></head>
 <body>
 
 <div class="header">
@@ -545,7 +549,7 @@ body{background:radial-gradient(circle at top,#1a1a1a,#090909 55%);}
       <textarea id="recipeIngredients" placeholder="Ingredients e.g. Chicken 500g&#10;Potatoes 1kg"></textarea>
       <input id="ovenInfo" placeholder="Oven: 180°C • 30 min" style="width:100%;padding:12px;border-radius:12px;margin-top:8px;">
       <input id="airInfo" placeholder="Air Fryer: 190°C • 15 min" style="width:100%;padding:12px;border-radius:12px;margin-top:8px;">
-      <button onclick="saveRecipe()" style="margin-top:10px;width:100%;padding:12px;border-radius:12px;">Save Recipe</button>
+      <button class="recipe-btn" onclick="randomRecipe()">🎲 Surprise Me</button><select id="recipeCategory"><option>Any</option><option>Healthy</option><option>Vegetable</option><option>Free Day</option><option>Dessert</option></select><select id="recipeTime"><option>Any</option><option>Quick</option><option>Medium</option><option>Slow</option></select><select id="recipeDifficulty"><option>Any</option><option>Easy</option><option>Medium</option><option>Hard</option></select><button onclick="saveRecipe()" style="margin-top:10px;width:100%;padding:12px;border-radius:12px;">Save Recipe</button>
     </div>
     <div id="recipeList" style="margin-top:12px"></div>
   </div>
@@ -1414,5 +1418,5 @@ function renderRecipes(){
 renderRecipes();
 </script>
 
-</body>
+<script>const RANDOM_RECIPES=[{"name": "Greek Salad", "cat": "Healthy", "time": "Quick", "diff": "Easy", "ing": "Tomatoes 200g\nCucumber 150g\nFeta 80g", "oven": "", "air": ""}, {"name": "Hot Dogs", "cat": "Free Day", "time": "Quick", "diff": "Easy", "ing": "4 Hot Dogs\n4 Buns", "oven": "", "air": ""}, {"name": "Brownies", "cat": "Dessert", "time": "Medium", "diff": "Medium", "ing": "Chocolate\nFlour\nEggs", "oven": "180\u00b0C 30 min", "air": ""}, {"name": "Roasted Vegetables", "cat": "Vegetable", "time": "Medium", "diff": "Easy", "ing": "Carrots\nBroccoli\nPotatoes", "oven": "200\u00b0C 35 min", "air": ""}, {"name": "Lasagna", "cat": "Free Day", "time": "Slow", "diff": "Hard", "ing": "Beef\nPasta\nCheese", "oven": "180\u00b0C 50 min", "air": ""}];function randomRecipe(){let r=RANDOM_RECIPES.filter(x=>(recipeCategory.value==='Any'||x.cat===recipeCategory.value)&&(recipeTime.value==='Any'||x.time===recipeTime.value)&&(recipeDifficulty.value==='Any'||x.diff===recipeDifficulty.value));if(!r.length){alert('No recipes found');return;}const a=r[Math.floor(Math.random()*r.length)];recipeName.value=a.name;recipeIngredients.value=a.ing;ovenInfo.value=a.oven;airInfo.value=a.air;}</script></body>
 </html>
