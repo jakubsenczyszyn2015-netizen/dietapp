@@ -383,6 +383,28 @@
   .view { display: none; }
   .view.active { display: block; }
 </style>
+
+<style id="liquid-glass-upgrade">
+:root{--bg:#090909;--surface:rgba(255,255,255,.08);--surface2:rgba(255,255,255,.06);--border:rgba(255,255,255,.12)}
+body{background:radial-gradient(circle at top,#1a1a1a,#090909 55%);} 
+.header,.bottom-nav,.modal,.lang-modal,.today-card,.stat-card,.day-cell,.month-nav button,.lang-btn,.modal-btn{
+ background:rgba(255,255,255,.08)!important;
+ backdrop-filter:blur(28px) saturate(180%);
+ -webkit-backdrop-filter:blur(28px) saturate(180%);
+ border:1px solid rgba(255,255,255,.12)!important;
+ box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+.header,.bottom-nav{background:rgba(15,15,15,.55)!important;}
+.bottom-nav{left:12px;right:12px;bottom:12px;border-radius:28px;}
+.today-card,.stat-card,.modal,.lang-modal{border-radius:28px!important;}
+.day-cell{border-radius:18px!important;}
+.day-cell:active,.modal-btn:active,.nav-item:active{transform:scale(.97);transition:.15s;}
+.header-text h1{font-size:24px;}
+.streak-badge{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.12)}
+.nav-item.active{background:rgba(255,255,255,.08);border-radius:18px;}
+.toast{background:rgba(25,25,25,.65);backdrop-filter:blur(20px);}
+</style>
+
 </head>
 <body>
 
@@ -513,6 +535,22 @@
   </div>
 </div>
 
+
+<!-- Recipes View -->
+<div class="view" id="viewRecipes">
+  <div style="padding:20px 16px 10px"><h2 style="font-size:20px">🍽️ Recipes</h2></div>
+  <div class="notes-section">
+    <div class="today-card">
+      <input id="recipeName" placeholder="Recipe name" style="width:100%;padding:12px;border-radius:12px;margin-bottom:8px;">
+      <textarea id="recipeIngredients" placeholder="Ingredients e.g. Chicken 500g&#10;Potatoes 1kg"></textarea>
+      <input id="ovenInfo" placeholder="Oven: 180°C • 30 min" style="width:100%;padding:12px;border-radius:12px;margin-top:8px;">
+      <input id="airInfo" placeholder="Air Fryer: 190°C • 15 min" style="width:100%;padding:12px;border-radius:12px;margin-top:8px;">
+      <button onclick="saveRecipe()" style="margin-top:10px;width:100%;padding:12px;border-radius:12px;">Save Recipe</button>
+    </div>
+    <div id="recipeList" style="margin-top:12px"></div>
+  </div>
+</div>
+
 <!-- Bottom Nav -->
 <div class="bottom-nav">
   <div class="nav-item active" id="navCalendar" onclick="showView('calendar')">
@@ -522,6 +560,10 @@
   <div class="nav-item" id="navToday" onclick="showView('today')">
     <span class="nav-icon">✏️</span>
     <span class="nav-label" id="navLabelToday">Dzisiaj</span>
+  </div>
+  <div class="nav-item" id="navRecipes" onclick="showView('recipes')">
+    <span class="nav-icon">🍽️</span>
+    <span class="nav-label">Recipes</span>
   </div>
   <div class="nav-item" id="navSettings" onclick="showView('settings')">
     <span class="nav-icon">⚙️</span>
@@ -1349,5 +1391,28 @@ function showToast(msg) {
 
 init();
 </script>
+
+<script>
+function saveRecipe(){
+ const recipes=JSON.parse(localStorage.getItem('dietRecipes')||'[]');
+ recipes.push({name:recipeName.value,ingredients:recipeIngredients.value,oven:ovenInfo.value,air:airInfo.value});
+ localStorage.setItem('dietRecipes',JSON.stringify(recipes));
+ renderRecipes();
+ recipeName.value=''; recipeIngredients.value=''; ovenInfo.value=''; airInfo.value='';
+}
+function deleteRecipe(i){
+ const recipes=JSON.parse(localStorage.getItem('dietRecipes')||'[]');
+ recipes.splice(i,1);
+ localStorage.setItem('dietRecipes',JSON.stringify(recipes));
+ renderRecipes();
+}
+function renderRecipes(){
+ const list=document.getElementById('recipeList'); if(!list) return;
+ const recipes=JSON.parse(localStorage.getItem('dietRecipes')||'[]');
+ list.innerHTML=recipes.map((r,i)=>`<div class="today-card" style="margin-top:12px"><h3>${r.name}</h3><p>${r.ingredients.replace(/\n/g,'<br>')}</p><p>🔥 ${r.oven}</p><p>🍟 ${r.air}</p><button onclick="deleteRecipe(${i})">Delete</button></div>`).join('');
+}
+renderRecipes();
+</script>
+
 </body>
 </html>
