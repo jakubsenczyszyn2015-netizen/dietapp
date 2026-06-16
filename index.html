@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Diet Tracker">
@@ -409,7 +409,12 @@ body{background:radial-gradient(circle at top,#1a1a1a,#090909 55%);}
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
-<style>.view input,.view textarea,.view select{background:rgba(20,20,20,.7)!important;color:#fff!important;border:1px solid rgba(255,255,255,.12)!important}.recipe-btn{width:100%;padding:12px;border-radius:14px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12);margin-top:8px}</style></head>
+<style>.view input,.view textarea,.view select{background:rgba(20,20,20,.7)!important;color:#fff!important;border:1px solid rgba(255,255,255,.12)!important}.recipe-btn{width:100%;padding:12px;border-radius:14px;background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.12);margin-top:8px}</style>
+<style id="anti-zoom">
+html, body { touch-action: manipulation; overscroll-behavior: none; }
+button, .nav-item, .day-cell, .modal-btn, .lang-btn, input, textarea, select { touch-action: manipulation; }
+</style>
+</head>
 <body>
 
 <div class="header">
@@ -1418,5 +1423,14 @@ function renderRecipes(){
 renderRecipes();
 </script>
 
-<script>const RANDOM_RECIPES=[{"name": "Greek Salad", "cat": "Healthy", "time": "Quick", "diff": "Easy", "ing": "Tomatoes 200g\nCucumber 150g\nFeta 80g", "oven": "", "air": ""}, {"name": "Hot Dogs", "cat": "Free Day", "time": "Quick", "diff": "Easy", "ing": "4 Hot Dogs\n4 Buns", "oven": "", "air": ""}, {"name": "Brownies", "cat": "Dessert", "time": "Medium", "diff": "Medium", "ing": "Chocolate\nFlour\nEggs", "oven": "180\u00b0C 30 min", "air": ""}, {"name": "Roasted Vegetables", "cat": "Vegetable", "time": "Medium", "diff": "Easy", "ing": "Carrots\nBroccoli\nPotatoes", "oven": "200\u00b0C 35 min", "air": ""}, {"name": "Lasagna", "cat": "Free Day", "time": "Slow", "diff": "Hard", "ing": "Beef\nPasta\nCheese", "oven": "180\u00b0C 50 min", "air": ""}];function randomRecipe(){let r=RANDOM_RECIPES.filter(x=>(recipeCategory.value==='Any'||x.cat===recipeCategory.value)&&(recipeTime.value==='Any'||x.time===recipeTime.value)&&(recipeDifficulty.value==='Any'||x.diff===recipeDifficulty.value));if(!r.length){alert('No recipes found');return;}const a=r[Math.floor(Math.random()*r.length)];recipeName.value=a.name;recipeIngredients.value=a.ing;ovenInfo.value=a.oven;airInfo.value=a.air;}</script></body>
+<script>const RANDOM_RECIPES=[{"name": "Greek Salad", "cat": "Healthy", "time": "Quick", "diff": "Easy", "ing": "Tomatoes 200g\nCucumber 150g\nFeta 80g", "oven": "", "air": ""}, {"name": "Hot Dogs", "cat": "Free Day", "time": "Quick", "diff": "Easy", "ing": "4 Hot Dogs\n4 Buns", "oven": "", "air": ""}, {"name": "Brownies", "cat": "Dessert", "time": "Medium", "diff": "Medium", "ing": "Chocolate\nFlour\nEggs", "oven": "180\u00b0C 30 min", "air": ""}, {"name": "Roasted Vegetables", "cat": "Vegetable", "time": "Medium", "diff": "Easy", "ing": "Carrots\nBroccoli\nPotatoes", "oven": "200\u00b0C 35 min", "air": ""}, {"name": "Lasagna", "cat": "Free Day", "time": "Slow", "diff": "Hard", "ing": "Beef\nPasta\nCheese", "oven": "180\u00b0C 50 min", "air": ""}];function randomRecipe(){let r=RANDOM_RECIPES.filter(x=>(recipeCategory.value==='Any'||x.cat===recipeCategory.value)&&(recipeTime.value==='Any'||x.time===recipeTime.value)&&(recipeDifficulty.value==='Any'||x.diff===recipeDifficulty.value));if(!r.length){alert('No recipes found');return;}const a=r[Math.floor(Math.random()*r.length)];recipeName.value=a.name;recipeIngredients.value=a.ing;ovenInfo.value=a.oven;airInfo.value=a.air;}</script>
+<script>
+let lastTouchEnd=0;
+document.addEventListener('touchend',function(e){
+ const now=Date.now();
+ if(now-lastTouchEnd<=300)e.preventDefault();
+ lastTouchEnd=now;
+},{passive:false});
+</script>
+</body>
 </html>
